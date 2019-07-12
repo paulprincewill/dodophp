@@ -1,0 +1,97 @@
+body {
+    margin-top: 100px;
+    text-align: left
+}
+
+#header {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    position: fixed;
+    top:0px;
+    left:0px;
+    right: 0px;
+    text-align: center;
+    background: white
+}
+
+#header > p {
+    flex: 3;
+    font-size: 22px;
+    padding: 26px;
+    border-right: 1px solid #eee;
+    margin:0px;
+}
+
+#header > div {
+    padding: 0px 20px
+}
+
+#header .total_selected {
+    border: 1px solid #eee;
+    background: white;
+    border-radius: 50%;
+    padding: 10px;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    position: relative;
+    left: -40px;
+    margin-right: -40px;
+}
+
+#folders {
+    display: flex;
+    text-align: center;
+    margin: 10px 5%;
+    flex-flow: row wrap
+}
+
+#folders > div {
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 20px 30px;
+    font-size: 100%;
+    margin: 10px;
+    flex: 1 0 10%;
+    max-width: 10%;
+    cursor: pointer;
+    transition: all 0.5s
+}
+
+#folders > div:hover {
+    box-shadow: 0px 0px 10px #f5f5f5;
+    border-color: #f5f5f5
+}
+
+#folders .check {
+    position: relative;
+    top: -36px;
+    left: -50px;
+    background: white;
+    padding: 5px;
+    margin: -15px;
+    color: #ddd;
+    border-radius: 50%;
+    transition: all 0.5s
+}
+
+#folders .selected .check {
+    color: #e64c3c;
+    font-weight: bold
+}
+
+#folders .selected {
+    box-shadow: 0px 0px 10px #f9f9f9;
+    border: 1px solid #f5f5f5;
+}
+
+.select_all {
+    padding: 5px 40px;
+    font-size: 80%;
+    margin: 10px 7%
+}
+
+.select_all:hover {
+    padding: 5px 40px;
+}

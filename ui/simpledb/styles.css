@@ -1,0 +1,328 @@
+body {
+    padding: 0px;
+    margin:0px
+}
+
+form {
+    border: 0px;
+    border-radius: 0px;
+    overflow: initial; 
+    max-width: initial;
+    padding: 0px;
+}
+
+#header {
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    text-align: left
+}
+
+#header > * {
+   flex: 1
+}
+
+#header > *:first-child {
+    flex: 3;
+    font-family: metropolis black;
+    padding-left: 100px
+}
+
+#main_area {
+    padding: 2% 12%;
+    text-align: left;
+    border-bottom: 1px solid #eee
+}
+
+
+#main_area > * {
+    display: none
+}
+
+.current_field {
+    display: block !important
+}
+
+#main_area section {
+    display: flex;
+    align-items: center
+}
+
+#main_area section > * {
+    flex: 1;
+    padding: 10px 20px;
+}
+
+#main_area .title {
+    flex: 2
+}
+
+#main_area .placeholder {
+    flex: 4
+}
+
+#main_area input[type='text'], #main_area select {
+    border: 1px solid #eee;
+    border-radius: 50px;
+    padding: 10px 10px 10px 15px;
+    margin: 10px 0px;
+    width: 98%;
+    box-shadow: 0px 0px 10px #fefefe;
+    transition: all 0.5s
+}
+
+#main_area input[type='text']:hover, #main_area select:hover {
+    box-shadow: 0px 0px 10px #f0f0f0;
+}
+
+#main_area input[type='text']:focus {
+    box-shadow: 0px 10px 25px #f5f5f5;
+}
+
+#main_area span {
+    display: inline-block;
+    margin: 2px 20px;
+    font-size: 12px
+}
+
+#main_area .required {
+    flex: 2;
+    text-align: right
+}
+
+
+/* ------ ---------------- --- STYLES FOR ACTIONS */
+#actions button, #preview .form_publish button {
+    padding: 5px 40px;
+    font-size: 60%;
+    font-weight: lighter;
+    display: block;
+    border-radius: 50px
+}
+
+#actions button:last-child, #preview .publish {
+    background-color: #33bd8a
+}
+
+#actions i, #preview .form_publish i {
+    padding: 5px
+}
+
+#actions {
+    padding: 2%;
+    text-align: right;
+    position: fixed;
+    bottom: 0px;
+    right: 0px
+}
+
+#preview .form_publish {
+    text-align: right;
+    padding: 10px;
+    margin-bottom: 30px;
+    padding-right: 30px;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px
+}
+
+#preview .form_publish button {
+    display: inline-block;
+    box-shadow: 0px 10px 25px black;
+    font-size: 80%;
+}
+
+
+/* ------ ---------------- --- STYLES FOR FIELDS LIST */
+
+#fields {
+    padding: 2% 10%;
+    font-size: 85%;
+    text-align: left
+}
+
+#fields div {
+    border: 1px solid #eee;
+    border-radius: 50px;
+    padding: 0px 60px 0px 20px;
+    margin: 10px;
+    transition: all 0.5s;
+    display: inline-block;
+    position: relative;
+    text-align: left;
+}
+
+#fields p {
+    display: inline-block;
+    padding: 5px;
+    margin: 0px;  
+    cursor: pointer;
+    transition: all 0.5s
+}
+
+#fields p:hover {
+    color: #e64c3c
+}
+
+#fields span {
+    position: absolute;
+    right: 10px;
+    bottom: -5px;
+    color: #999;
+    display: inline-block;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.5s
+}
+
+
+#fields span:hover {
+    text-shadow: 1px 1px 5px #aaa;
+}
+
+#preview {
+    position: fixed;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    background: rgba(0,0,0,0.9);
+    padding: 5%;
+    overflow-y: scroll;
+    display: none
+}
+
+
+#preview .form_preview {
+    background-color: white;
+    width: 40%;
+    margin: auto;
+    border-radius: 20px;
+    text-align: left;
+    margin-top: 100px
+}
+
+#preview .form_preview > section {
+    border-bottom: 1px solid #eee;
+    position: relative
+}
+
+#preview .form_preview > section:last-child {
+    border-bottom: 0px
+}
+
+#preview label {
+    padding: 5px 20px;
+    margin: 20px 10px 5px 30px;
+    display: inline-block;
+    border: 1px solid #eee;
+    border-radius: 50px;
+    font-size: 85%;
+}
+
+#preview input {
+    width: 75%;
+    padding: 20px 45px;
+    border: 0px;
+    border-radius: 20px
+}
+
+#preview *::placeholder {
+    color: #999
+}
+
+#preview data {
+    padding: 5px 20px;
+    font-size: 80%;
+    border-radius: 50px;
+    color: white;
+    background-color: #e64c3c;
+    display: inline-block;
+    margin: 3px
+}
+
+
+
+#preview .keyword {
+    position: relative;
+    left: -240px;
+    top: -80px;
+}
+
+#preview .data_right {
+    position: relative;
+    left: 220px;
+    top: -30px;
+    margin-top: -70px
+}
+
+#preview .keyword::after, #preview .data_right::before {
+    content: '';
+    display: inline-block;
+    background: #e64c3c;
+    width: 100px;
+    height: 1px;
+    position: relative;
+}
+
+#preview .keyword::after {
+    left: 25px;
+    top: -5px;
+    margin-right: -100px;
+}
+
+#preview .data_right::before {
+    left: 0px;
+    top: -5px;
+    margin-left: -100px;
+    width: 55px;
+}
+
+#preview .required {
+    width: 12px;
+    height: 12px;
+    padding: 2px;
+    position: relative;
+    left: 30px;
+    font-size: 120%;
+    background: white;
+    color: #e64c3c;
+    margin-right: -30px;
+    margin-top: -10px
+}
+
+
+
+#done {
+    position: fixed;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    background: rgba(0,0,0,0.9);
+    padding: 5%;
+    overflow-y: scroll;
+    display: none
+}
+
+
+#done > div {
+    background-color: white;
+    width: 30%;
+    margin: auto;
+    border-radius: 20px;
+    text-align: center;
+    margin: auto;
+    padding: 50px;
+    font-size: 20px;
+}
+
+#done > div > i {
+    color: #e64c3c
+}
+
+#done > div > p {
+    font-family: metropolis extralight;
+    line-height: 200%;
+}

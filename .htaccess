@@ -1,0 +1,17 @@
+Options +FollowSymLinks
+
+RewriteEngine on
+
+
+RewriteRule ^(.+)/(css|resources|apps)/(.*)$ $2/$3 [L]
+
+RewriteRule ^app/(.*)/(.*)$ apps/backend/$1/$2.php [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)/?$ pages/$1.php [NC,L]
+
+RewriteRule ^index.php pages/index.php [NC,L]
+RewriteRule ^$ pages/index.php [NC,L]
+
+# ErrorDocument 404 http://localhost/dodo/404page.php

@@ -1,0 +1,26 @@
+
+
+#page_index {
+	margin: 5%;
+}
+
+#hash_start {
+	width: 40%;
+	margin: 5% auto;
+}
+
+#hash_start p {
+    padding: 30px;
+}
+
+#hash_start input[type='text'] {  
+    text-align: center;
+    border-top: 1px solid #eee;
+    padding-left: 10px
+}
+
+#hash_start label {
+    padding: 10px;
+    display: block;
+    font-size: 20px
+}

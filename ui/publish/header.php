@@ -1,0 +1,1 @@
+<div id="header"> <p> Choose which project to publish to </p> <div class="publish"> <span class="total_selected">0</span> <button onclick="publish()"> Publish <span class="arrow"> → </span> </button> </div></div>

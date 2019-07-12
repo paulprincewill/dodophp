@@ -1,0 +1,75 @@
+.ewa_switch {
+    position: relative;
+    display: inline-block;
+    margin: 5px 7px;
+}
+
+.ewa_switch > input[type='checkbox'] {
+    opacity: 0;
+    display: inline-block;
+    position: absolute;
+    background-color: #ccc;
+    border-radius: 50px;
+    width: 50px;
+    height: 100%;
+    left: -20px;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    border: 1px solid black;
+    z-index: 1;
+    cursor: pointer
+    
+}
+
+.ewa_switch label {
+    display: inline-block;
+    position: relative;
+    font-size: 85%
+}
+
+.ewa_switch label::before {
+    content: '';
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    background-color: #ccc;
+    border-radius: 50px;
+    width: 35px;
+    height: 10px;
+    transition: all 0.4s;
+    left: -10px
+}
+
+.ewa_switch label::after {
+    content: '';
+    position: absolute;
+    top: -2.5px;
+    bottom: 0px;
+    left: -12px;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #ccc;
+    border: 1px solid #bbb;
+    box-shadow: 0px 10px 25px #ccc;
+    transition: all 0.4s;
+    cursor: pointer
+
+}
+
+.ewa_switch > input[type='checkbox']:hover + label::after {
+    box-shadow: 0px 0px 10px #aaa
+}
+
+.ewa_switch > input[type='checkbox']:checked + label::after {
+    left: 3px;
+    background-color: #e64c3c;
+    border: 1px solid #b73d31;
+    
+}
+
+.ewa_switch > input[type='checkbox']:checked + label::before {
+    background-color: #e64c3c;
+}

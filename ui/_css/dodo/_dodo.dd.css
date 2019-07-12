@@ -1,0 +1,174 @@
+[dd_feedback] {
+    padding: 10px;
+    color: darkred;
+    text-align: center;
+    margin: 5px;
+}
+
+/* ------------------
+------------------------------- STYLE FOR LOADER --------------
+------------------------------------------------------------------ */
+
+dd_loader [dd_ajaxload] {
+    height: 2.5px;
+    width: 100%;
+    position: fixed;
+    top: 0px;
+    left:0px;
+    right: 0px;
+    overflow: hidden;
+    background-color: #ccc;
+    z-index: 2;
+    display: none
+}
+
+dd_loader [dd_ajaxload]:before{
+  display: block;
+  position: absolute;
+  content: "";
+  left: -200px;
+  width: 200px;
+  height: 2.5px;
+  background-color: rgb(239,69,76);
+  animation: dd_ajaxload 1s linear infinite;
+  -webkit-animation: dd_ajaxload 1s linear infinite;
+}
+
+@keyframes dd_ajaxload {
+    from {left: -200px; width: 30%;}
+    50% {width: 30%;}
+    70% {width: 70%;}
+    80% { left: 50%;}
+    95% {left: 120%;}
+    to {left: 100%;}
+}
+
+@-webkit-keyframes dd_ajaxload {
+    from {left: -200px; width: 30%;}
+    50% {width: 30%;}
+    70% {width: 70%;}
+    80% { left: 50%;}
+    95% {left: 120%;}
+    to {left: 100%;}
+}
+
+
+dd_loader [dd_onload] {
+    padding-top: 15%;
+    padding-left: 5%;
+    text-align: center;
+    background: white;
+	position: fixed;
+	top:0px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	margin: auto;
+	z-index: 3;
+}
+
+dd_loader [dd_onload]::before {
+    content: '';
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+    border: 1px solid rgba(239,69,76,.3);
+    border-radius: 50%;
+    border-top-color: rgb(239,69,76);
+    animation: dd_onload 1s ease-in-out infinite;
+    -webkit-animation: dd_onload 1s ease-in-out infinite;
+}
+
+dd_loader [dd_onload]::after {
+	content: '';
+    display: inline-block;
+    width: 120px;
+    height: 120px;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center;
+    position: relative;
+    left: -135px;
+    top: -20px;
+}
+
+@keyframes dd_onload {
+  to { transform: rotate(360deg); }
+}
+@-webkit-keyframes dd_onload {
+  to { -webkit-transform: rotate(360deg); }
+}
+
+/* ------------------
+------------------------------- STYLE FOR dd_ attributes --------------
+------------------------------------------------------------------ */
+
+
+/* ------------------
+------------------------------- STYLE FOR SKELENTON UI --------------
+------------------------------------------------------------------ */
+
+.dd_shortline:empty::after, .dd_longline:empty::after, .dd_thumbnail:empty {
+	content: "";
+	display: inline-block;
+	height: 10px;
+	border-radius: 50px;
+	margin: 5px 0px;
+	background: #ddd;
+}
+
+
+.dd_longline:empty::after {
+	width: 100%;
+}
+
+.dd_shortline:empty::after {
+	width: 40%;
+	margin: auto;
+}
+
+.dd_thumbnail:empty {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin: 7px
+}
+
+.dd_longline:empty::after,
+.dd_shortline:empty::after,
+.dd_thumbnail:empty  {
+	-webkit-animation: dd_loading 1s infinite alternate;
+	animation: dd_loading 1s infinite alternate;
+}
+
+@keyframes dd_loading {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+/* -------------------------
+---------------------------- PAGINATION -------------
+-------------------------*/
+
+[dd_next]:empty:after {
+    content: 'Next';
+}
+
+[dd_previous]:empty:after {
+    content: 'Previous';
+}
+
+[dd_nodata] {
+    border: 1px solid #ddd;
+    padding: 30px 50px;
+    border-radius: 20px 20px 20px 0px;
+    font-size: 20px;
+    display: block;
+    width: 70% !important;
+    margin: 30px;
+}

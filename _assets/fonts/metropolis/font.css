@@ -1,0 +1,5 @@
+@font-face {
+	font-family: 'metropolis';
+	src: url('./Metropolis.eot');
+	src: local('Metropolis'), url('./Metropolis.woff') format('woff'), url('./Metropolis.ttf') format('truetype');
+}

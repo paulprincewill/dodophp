@@ -1,0 +1,11 @@
+#page_index {
+    margin: 50px 0px;
+    width: 80%
+}
+
+#page_index a {
+    border: 1px solid #ddd;
+    display: inline-block;
+    padding: 10px 45px;
+    border-radius: 100px
+}

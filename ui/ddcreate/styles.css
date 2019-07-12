@@ -1,0 +1,44 @@
+#page_ddcreate {
+	width: 40%;
+	margin: 5% auto;
+}
+
+form {
+	border: 1px solid #eee;
+	border-radius: 20px;
+	overflow: hidden;
+	max-width: 500px
+}
+
+form input[type='text'], form textarea {
+	width: 99%;
+	border: 0px;
+	border-bottom: 1px solid #eee;
+	padding: 30px;
+}
+
+button, input[type='submit'], input[type='button'] {
+	background-color: #e64c3c;
+	color: white;
+	padding: 10px 30px;
+	border-radius: 50px;
+	font-weight: bold;
+	border: 0px;
+	margin: 10px;
+	transition: all 0.5s;
+	box-shadow: 0px 10px 25px #ccc;
+	cursor: pointer
+	
+}
+
+button:hover, input[type='submit']:hover, input[type='button']:hover {
+	padding: 10px 33px;
+	box-shadow: 0px 0px 10px #999;
+	background-color: #ce4436;
+}
+
+
+[dd_feedback] {
+	color: #ce4436;
+	padding: 20px;
+}

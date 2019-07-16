@@ -1,3 +1,5 @@
+<div id="version" dd_hide></div>
+
 <div>
 	<img src="_assets/icons/jenny/smile.png" width='100'>
 	<h1> Hello, Welcome to DoDo Framework </h1>

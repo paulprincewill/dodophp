@@ -24,3 +24,19 @@
     display: block;
     font-size: 20px
 }
+
+#version {
+    color: white;
+    background: #e64c3c;
+    padding: 10px 40px;
+    border-radius: 5px;
+    box-shadow: 0px 10px 25px #eee;
+    font-size: 80%;
+    display: inline-block;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    margin: 30px;
+    transition: all 0.5s
+    
+}

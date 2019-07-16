@@ -34,10 +34,13 @@ function dd_ajax(get) {
 	self.data = get.data || '';
 	self.method = get.method || 'POST';
     self.content_type = get.content_type || '';
+    self.request_type = get.request_type || '';
     self.data_type = get.data_type || '';
     self.if_successful = get.if_successful || '';
     self.if_not = get.if_not || '';  
-    self.expecting = get.expecting || self.if_successful !='' && 'JSON' || '';
+    self.expecting = get.expecting || self.if_successful !='' && 'JSON' || ''; 
+	self.interval = get.interval || "";
+	self.timeSet = get.timeSet || "";
 
 	self.__construct = function() {
         self.start_loader();
@@ -83,8 +86,6 @@ function dd_ajax(get) {
 
 	self.request_using_post = function() {
         
-        console.log('url - '+self.url);
-        console.log(self.data);
 
 		self.ajax.open("POST",self.url,true);
         if (self.content_type != 'none' && self.content_type == '') {
@@ -124,9 +125,21 @@ function dd_ajax(get) {
         	self.ready(e);
         }
         
-        console.log('result - '+e);
+        console.log(e);
     }
    
 
 	self.__construct();
+    
+    if (self.interval !='' && self.timeSet !='yes') {
+        if (typeof self.interval === 'number') {
+            
+            setInterval(function() {
+                get.timeSet = 'yes';
+                dd_ajax(get);
+            }, self.interval)
+        } else {
+            console.log("DoDo301: interval was not set to a number");
+        }
+    }
 }

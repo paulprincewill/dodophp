@@ -10,8 +10,6 @@ function dd(selector) {
 	}
     
     self.validObject = function() {
-        console.log(selector);
-        console.log(typeof selector);
         if (typeof selector !== 'object' ) {
             console.log("The target is not an object");
             return false;
@@ -218,10 +216,13 @@ function dd_ajax(get) {
 	self.data = get.data || '';
 	self.method = get.method || 'POST';
     self.content_type = get.content_type || '';
+    self.request_type = get.request_type || '';
     self.data_type = get.data_type || '';
     self.if_successful = get.if_successful || '';
     self.if_not = get.if_not || '';  
-    self.expecting = get.expecting || self.if_successful !='' && 'JSON' || '';
+    self.expecting = get.expecting || self.if_successful !='' && 'JSON' || ''; 
+	self.interval = get.interval || "";
+	self.timeSet = get.timeSet || "";
 
 	self.__construct = function() {
         self.start_loader();
@@ -267,8 +268,6 @@ function dd_ajax(get) {
 
 	self.request_using_post = function() {
         
-        console.log('url - '+self.url);
-        console.log(self.data);
 
 		self.ajax.open("POST",self.url,true);
         if (self.content_type != 'none' && self.content_type == '') {
@@ -308,11 +307,23 @@ function dd_ajax(get) {
         	self.ready(e);
         }
         
-        console.log('result - '+e);
+        console.log(e);
     }
    
 
 	self.__construct();
+    
+    if (self.interval !='' && self.timeSet !='yes') {
+        if (typeof self.interval === 'number') {
+            
+            setInterval(function() {
+                get.timeSet = 'yes';
+                dd_ajax(get);
+            }, self.interval)
+        } else {
+            console.log("DoDo301: interval was not set to a number");
+        }
+    }
 }
 function dd_setClone() {
      // This section activates dd_clone
@@ -331,15 +342,23 @@ function dd_setClone() {
 	for (var i=0; i < data.length; i++) {
         var dat = data[i];
         var url = dat.getAttribute('dd_load');
+        
         var amount = dat.getAttribute('dd_amount') !== null && dat.getAttribute('dd_amount') !='' && dat.getAttribute('dd_amount') || 'all';
+        
+        var append = dat.getAttribute('dd_append') !== null && dat.getAttribute('dd_append') !='' && dat.getAttribute('dd_append') || '';
+        
         var pagination = dat.getAttribute('dd_pagination') !== null && dat.getAttribute('dd_pagination') !='' && dat.getAttribute('dd_pagination') || 'yes';
+        
+        var interval = dat.getAttribute('dd_interval') !== null && dat.getAttribute('dd_interval') !='' && parseInt(dat.getAttribute('dd_interval')) || '';
     
         
         dd_load({
             url: url,
             target: dat,
             amount: amount,
-            pagination: pagination
+            pagination: pagination,
+            append: append,
+            interval: interval
         });
     }
 }
@@ -360,7 +379,8 @@ function dd_load(get) {
 	self.storage = get.preloading || "off";
 	self.url = get.url || self.load =="" && console.log('Dodo201: url is not set') || "";
 	self.pagination = get.pagination || "no";
-	self.amount= get.amount || "";
+	self.amount = get.amount || "";
+	self.append = get.append || "";
 	self.ready = get.ready || function() {};
 	self.on_load = get.on_load || function() {};
 	self.after_load = get.after_load || function() {};
@@ -483,7 +503,6 @@ function dd_load(get) {
 		}
 
 		dd_ajax(get);
-		console.log(get);
 	}
 
 	self.loadStoredData = function() {
@@ -558,22 +577,27 @@ function dd_load(get) {
             return false;
         }
         
-		// Hide all extra elements if data is less than expected
-		if (allElements > self.amount) {
-            for (var i=self.amount; i < allElements; i++) {
-				var x = target.children[i];
-				dd(x).hide();
-			}
-		} 
-        
         // Create new elements for extra data
         // If the data we need is greater than the available elements
-        if (self.amount > allElements) {
+        // Always create new element if we are appending
+        if (self.append == 'yes') {
+            
+            var howMany = allElements == 1 && self.amount-1 || self.amount;
+            for (var i= 0; i<howMany; i++) {
+                
+                var newElement = target.children[0].cloneNode(true);
+                target.children[allElements-1].parentNode.insertBefore(newElement, target.children[allElements-1].nextSibling);
+            }
+            
+            // Since target now has new children, we have to re select it
+            target = dd(self.target).select();
+            
+        } else if (self.amount > allElements) {
             
             for (var i= 0; i<self.amount - allElements; i++) {
                 
-                var newElement = target.children[0].cloneNode(true); 
-				target.prepend(newElement);
+                var newElement = target.children[0].cloneNode(true);
+                target.children[allElements-1].insertAfter(newElement);
             }
             
             // Since target now has new children, we have to re select it
@@ -581,19 +605,48 @@ function dd_load(get) {
 
         }
 
+        if (self.append != 'yes') {
+          
+            // Hide all extra elements if data is less than expected
+            if (allElements > self.amount) {
+                for (var i=self.amount; i < allElements; i++) {
+                    var x = target.children[i];
+                    dd(x).hide();
+                }
+            }   
+        }
         
+        
+        if (allElements == 1) {
+           allElements = 0; 
+        } 
+            
 		for (var i=0; i<self.amount; i++) {
             
-			var x = target.children[i];
+            var t = self.append == 'yes' && (allElements+i) || i;
+			var x = target.children[t];
+            console.log("t is "+t);
+			x.id= t;
             
 			if (typeof self.result[i] !== 'undefined' && !dd(self.result[i]).isEmpty()) {
-                console.log(x);
+               
 				self.displayEachData(self.result[i], x);
 				dd(x).fadeIn(500);
 			} else {
                 dd(x).hide();
             }
 		}
+        
+//        if (self.append == 'yes') {
+//            
+//            var t = (allElements+1)-self.amount;
+//			var x = target.children[t];
+//            target.lastElementChild.scrollIntoView(true);
+//        } else {
+//            target.scrollIntoView(true);
+//        }
+//        
+       
 	}
 
 	self.displayEachData = function(data, target) {
@@ -602,30 +655,53 @@ function dd_load(get) {
         for (var x in data) {
             if (data.hasOwnProperty(x)) {
                 var where = dd(target).select();
-                where = where.querySelector("[dd_data='"+x+"']");
-                if (where) {
-                    // We first try to find if there is any dd_if present
-                    var conditions = where.querySelectorAll("[dd_if]");
-                    if (!dd(conditions).isEmpty()) {
-                        
-                        for (var i = 0; i<conditions.length; i++) {
-                            var y = conditions[i];
-                            if (y.getAttribute('dd_if') == data[x]) {
-                                dd(y).show();
-                                console.log('show '+y.getAttribute('dd_if'));
-                            } else {
-                                dd(y).hide();
-                                console.log('hide '+y.getAttribute('dd_if'));
-
-                            }
-                            
-                        }
-                        
-                    } else { 
-                        where.innerHTML = data[x]; 
+                var w = where.querySelectorAll("[dd_display='"+x+"']");
+                if (!dd(w).isEmpty()) {
+                    for (var i = 0; i<w.length; i++) {
+                       w[i].innerHTML = data[x]; 
                     }
+                }
+                
+                // We also try to find if there is any dd_checkFor present
+                var conditions = where.querySelectorAll("[dd_checkFor]");
+                if (!dd(conditions).isEmpty()) {
                     
+                    for (var i = 0; i<conditions.length; i++) {
+                        checkFor(conditions[i]);
+                    }
                 } 
+                
+                if (where.getAttribute('dd_checkFor') !== null) {
+                    checkFor(where);
+                }
+                
+                function checkFor(condition) {
+                    
+
+                    var q = condition;
+                    var dat = q.getAttribute('dd_checkFor');
+                    var each_condition = q.children;
+                    
+
+                    if (dat == x) {
+
+                       for (var j = 0; j<each_condition.length; j++) {
+
+                            var y = each_condition[j];
+                           if (y.getAttribute('dd_if') !== null) {
+                             if (y.getAttribute('dd_if') == data[x]) {
+                                    dd(y).show();
+                                } else {
+
+                                    dd(y).hide();
+
+                                }  
+                           }
+                            
+                        } 
+                    }
+
+                }
             }
         }
 	}

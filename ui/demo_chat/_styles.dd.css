@@ -1,0 +1,51 @@
+#chat {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin: 30px auto;
+    width: 45%;
+    overflow: hidden
+}
+
+#messages {
+    padding: 30px;
+    position: relative;
+    overflow-y: scroll;
+    height: 500px
+}
+.each_message {
+    text-align: left
+}
+
+.each_message > div {
+    border: 1px solid  #f5f5f5;
+    border-radius: 0px 20px 20px 20px;
+    width: 45%;
+    text-align: left;
+    padding: 20px;
+    margin: 10px 0px;
+    display: inline-block
+}
+
+[dd_if='not_you'] {
+    text-align: right
+}
+
+[dd_if='you'] > div {
+    background-color: #f5f5f5
+}
+
+[dd_if='not_you'] > div {
+    border-radius: 20px 0px 20px 20px;
+}
+
+#chat .textarea {
+    border: 0px;
+    border-top: 1px solid #ddd;
+    border-radius: 0px
+    
+}
+
+
+.textarea textarea {
+    border: 0px 
+}

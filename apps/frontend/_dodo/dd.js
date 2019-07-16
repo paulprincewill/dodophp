@@ -10,8 +10,6 @@ function dd(selector) {
 	}
     
     self.validObject = function() {
-        console.log(selector);
-        console.log(typeof selector);
         if (typeof selector !== 'object' ) {
             console.log("The target is not an object");
             return false;

@@ -1,0 +1,47 @@
+.description {
+    border-left: 2px solid #e64c3c;
+    padding: 0px 30px;
+    font-size: 130%;
+    line-height: 170%
+}
+
+.description .code-toolbar::after {
+    content: "";
+    display: block;
+    background: white;
+    position: absolute;
+    width: 110%;
+    left: -35px;
+    height: 10px;
+    bottom: 0px;
+}
+
+.code {
+    display: inline-block;
+    background: #ddd;
+    padding: 3px 20px;
+    margin: 5px;
+    font-size: 80%;
+    border-radius: 50px;
+    font-weight: bold;
+}
+
+.links {
+    margin: 20px;
+    margin-bottom: -150px;
+    position: relative;
+    left: 100%;
+    top: -150px;
+    text-align: right;
+    width: 20%;
+    min-height: 150px;
+}
+
+.links a {
+    display: inline-block;
+    padding: 5px 40px;
+    margin: 5px;
+    font-size: 80%;
+    border-bottom: 1px solid #ddd
+}
+

@@ -187,6 +187,10 @@ function dd_setAjax() {
                 
                 var ele = e.target;
                 var url = ele.getAttribute('dd_ajax');
+                var target = ele.getAttribute('dd_target');
+                if (target !==null && target !='') {
+                    ele = dd(target).select();
+                }
 
                 dd_ajax({
                     url: url,
@@ -213,6 +217,7 @@ function dd_ajax(get) {
 	self.url = get.url;
 	self.loader = '';
 	self.ready = get.ready;
+	self.after_request = get.after_request;
 	self.data = get.data || '';
 	self.method = get.method || 'POST';
     self.content_type = get.content_type || '';
@@ -307,6 +312,12 @@ function dd_ajax(get) {
         	self.ready(e);
         }
         
+        if (typeof self.after_request === 'function') {
+        	self.after_request(e);
+        }
+        
+        
+        
         console.log(e);
     }
    
@@ -337,37 +348,70 @@ function dd_setClone() {
         }
     }
     
-}function dd_setLoad() {
+}function dd_setLoad(x) {
     var data = document.querySelectorAll("[dd_load]");
 	for (var i=0; i < data.length; i++) {
-        var dat = data[i];
-        var url = dat.getAttribute('dd_load');
+        (function() {
+             var x = dd_bindLoad(data[i]);
+
+            var target = data[i].getAttribute('dd_target') !== null && data[i].getAttribute('dd_target') !='' && data[i].getAttribute('dd_target') || '';
+
+            if (target !='') {
+
+                var y = data[i];
+                data[i].addEventListener('click', function() {
+                                    console.log(y);
+
+                    var x = dd_bindLoad(y);
+                    x.target = target;
+                    console.log("clciked x is");
+                    console.log(x);
+                    dd_load(x);
+                })
+
+            } else {
+               dd_load(x); 
+            }
+        }());
+       
         
-        var amount = dat.getAttribute('dd_amount') !== null && dat.getAttribute('dd_amount') !='' && dat.getAttribute('dd_amount') || 'all';
+    }
+}
+
+function dd_bindLoad(dat) {
+    var url = dat.getAttribute('dd_load');
         
-        var append = dat.getAttribute('dd_append') !== null && dat.getAttribute('dd_append') !='' && dat.getAttribute('dd_append') || '';
-        
-        var pagination = dat.getAttribute('dd_pagination') !== null && dat.getAttribute('dd_pagination') !='' && dat.getAttribute('dd_pagination') || 'yes';
-        
-        var interval = dat.getAttribute('dd_interval') !== null && dat.getAttribute('dd_interval') !='' && parseInt(dat.getAttribute('dd_interval')) || '';
+    var amount = dat.getAttribute('dd_amount') !== null && dat.getAttribute('dd_amount') !='' && dat.getAttribute('dd_amount') || '';
     
-        
-        dd_load({
+
+    var append = dat.getAttribute('dd_append') !== null && dat.getAttribute('dd_append') !='' && dat.getAttribute('dd_append') || '';
+
+    var pagination = dat.getAttribute('dd_pagination') !== null && dat.getAttribute('dd_pagination') !='' && dat.getAttribute('dd_pagination') || '';
+
+    if (amount == '' && pagination == '') {
+        pagination = 'no';
+    } else {
+        pagination = 'yes';
+    }
+    
+    var interval = dat.getAttribute('dd_interval') !== null && dat.getAttribute('dd_interval') !='' && parseInt(dat.getAttribute('dd_interval')) || '';
+    
+    
+    return {
             url: url,
             target: dat,
             amount: amount,
             pagination: pagination,
             append: append,
             interval: interval
-        });
-    }
+        }
 }
 
 function dd_load(get) {
     
 	var self = {};
 	self.get = get; // The request comes as object, for flexibility
-    self.result = '';
+    self.result = get.result || '';
 	self.data = get.data || "";
 	self.page = get.page || 1;
 	self.current_button = get.current_button || 'next';
@@ -394,8 +438,7 @@ function dd_load(get) {
 		self.prepareParameters();  // Prepare parameters that will be sent to backend
 
 		// If data was already specified, don't send ajax
-		if (self.load != '') {
-            self.result = self.load;
+		if (self.result != '') {
 			self.dataIsReady();
 		}
 
@@ -428,7 +471,7 @@ function dd_load(get) {
                 self.displayMultipleData();
                 
             } else {
-
+                
                 self.result = typeof self.result[0] !=='undefined' && self.result[0] || self.result;
 
                 self.displaySingleData();
@@ -437,6 +480,7 @@ function dd_load(get) {
             self.thereIsData();
             self.after_load(self.result);
 		} 
+        
         else {
 			self.thereIsNoData();
 		}
@@ -550,7 +594,7 @@ function dd_load(get) {
 
 	self.displaySingleData = function() {		
 		dd(self.target).hide(); // First we hide the div to create a smooth fadeIn.
-		self.displayEachData(self.data, self.target);
+		self.displayEachData(self.result, self.target);
 		dd(self.target).fadeIn(500);
 	}
 
@@ -597,7 +641,7 @@ function dd_load(get) {
             for (var i= 0; i<self.amount - allElements; i++) {
                 
                 var newElement = target.children[0].cloneNode(true);
-                target.children[allElements-1].insertAfter(newElement);
+                target.children[allElements-1].parentNode.insertBefore(newElement, target.children[allElements-1].nextSibling);
             }
             
             // Since target now has new children, we have to re select it
@@ -658,7 +702,37 @@ function dd_load(get) {
                 var w = where.querySelectorAll("[dd_display='"+x+"']");
                 if (!dd(w).isEmpty()) {
                     for (var i = 0; i<w.length; i++) {
-                       w[i].innerHTML = data[x]; 
+                        var tag = w[i].tagName.toLowerCase()
+                        if ( tag == 'img') {
+                            w[i].src = data[x]; 
+                        } else if (tag == 'input' || tag =='textarea') {
+                            w[i].value = data[x]; 
+                        } else {
+                            w[i].innerHTML = data[x]; 
+                        }
+                         
+                    }
+                }
+                
+                // We also check if there are attributes with this value
+                var attr = where.querySelectorAll("[dd_attr]");
+                if (!dd(attr).isEmpty()) {
+                    
+                    for (var i = 0; i<attr.length; i++) {
+                        checkAttr(attr[i]);
+                    }
+                }
+                
+                if (where.getAttribute('dd_attr') !== null) {
+                    checkAttr(where);
+                }
+                
+                function checkAttr(attr) {
+                    var ele = attr.attributes;
+                    for (var j = 0; j < ele.length; j++) {
+                        if (ele[j].value == "["+x+"]") {
+                            ele[j].value = data[x];
+                        }
                     }
                 }
                 
@@ -973,106 +1047,85 @@ function dd_setSubmit() {
         
 		var url = forms[i].getAttribute('action');
 		var redirect = forms[i].getAttribute('dd_redirect');
+		var bindData = forms[i].getAttribute('dd_bindData');
+		var bindResult = forms[i].getAttribute('dd_bindResult');
 		var x = forms[i].getAttribute('dd_submit');
         var target = forms[i];
-        
-        
-        forms[i].addEventListener("submit", function(e) {
-            
-            e.preventDefault();
-            console.log(url)
-;            if (url == "" && x=='yes' || url == null && x=='yes') {
-                console.log("DoDo301s: Your target url for one of your forms is empty");
-            } else if (x=='yes') {
 
-               var data = new FormData(target);
-                dd_defaultSubmit({
-                    url: url,
-                    data: data,
-                    target: target,
-                    redirect_to: redirect
-                });
-            } else if (x=='file') {
-                
-                var data = new FormData(target);
-                dd_defaultSubmit({
-                    url: url,
-                    data: data,
-                    target: target,
-                    redirect_to: redirect,
-                    type: 'file'
-                });
-                
-            } else if (x !='yes' && x !='' || x == '') {
-                console.log("DoDo301s: dd_submit is not set to 'yes' for one of your forms");
-            }
-        });      
+
+        var data = new FormData(target);
+
+        dd_submit({
+            url: url,
+            data: data,
+            target: target,
+            redirect_to: redirect,
+            type: x,
+            if_successful : function(e) {
+
+                if (redirect !== null) {
+                    window.location.href = redirect;
+                } else if (typeof e.dd_redirect !== "undefined") {
+                     window.location.href = e.dd_redirect;
+                }
+},
+
+            if_not : function(e) {
+
+                var error_div = target.querySelector('[dd_feedback]');
+                if (typeof e.dd_feedback === 'undefined') {
+                    var error = "Something went wrong while submitting this form";
+                } else {
+                   var error = e.dd_feedback; 
+                }
+
+
+                // If feedback div exists, use it, else create one
+                if (error_div) {
+
+                    error_div.innerHTML = error;
+                    dd(error_div).fadeIn(1000);
+
+                } else {
+                    var error_div = document.createElement("div");
+                    error_div.setAttribute('dd_feedback',null);
+                    var text = document.createTextNode(error);
+                    error_div.appendChild(text);
+                    target.insertBefore(error_div, target.lastElementChild);
+                    dd(error_div).fadeIn(1000);
+
+                }
+},
+            content_type: "none",
+            bindData: bindData,
+            bindResult: bindResult
+
+        });    
         
 	}
      
 }
 
-function dd_defaultSubmit(get) {
-
-	var self = {};
-	// Start by getting the target
-	// Sometimes, the target may already be query selected, so we have to check
-	self.target = get.target;
-
-    get.if_successful = function(e) {
-        
-        if (get.redirect_to !== null) {
-            window.location.href = get.redirect_to;
-        } else if (typeof e.dd_redirect !== "undefined") {
-             window.location.href = e.dd_redirect;
-        }
-	}
-
-
-	get.if_not = function(e) {
-        
-		var error_div = self.target.querySelector('[dd_feedback]');
-        if (typeof e.dd_feedback === 'undefined') {
-            var error = "Something went wrong while submitting this form";
-        } else {
-           var error = e.dd_feedback; 
-        }
-        
-        
-		// If feedback div exists, use it, else create one
-		if (error_div) {
-
-			error_div.innerHTML = error;
-			dd(error_div).fadeIn(1000);
-
-		} else {
-			var error_div = document.createElement("div");
-			error_div.setAttribute('dd_feedback',null);
-			var text = document.createTextNode(error);
-			error_div.appendChild(text);
-			self.target.insertBefore(error_div, self.target.lastElementChild);
-			dd(error_div).fadeIn(1000);
-
-		}
-	}
-    
-    get.content_type = "none";
-	dd_ajax(get);
-	
-}
-
 
 function dd_submit(get) {
+    
     var self = {};
     self.target = dd(get.target).select() || '';
     self.type = get.type || 'normal';
+    self.dataTarget = get.bindData || '';
+    self.resultTarget = get.bindResult || '';
+    self.data = '';
     
     
     self.__construct = function() {
         self.target.addEventListener('submit', function(e) {
             e.preventDefault();
-            console.log('form is submit');
             self.sendForm();
+            
+            if (self.dataTarget !='' && self.dataTarget !==null) {
+                self.bindData();
+            }
+            
         });
     }
     
@@ -1080,12 +1133,42 @@ function dd_submit(get) {
         self.prepareData();
         
         get.content_type = "none";
+        
+        if (self.resultTarget !='' && self.resultTarget !==null) {
+            get.after_request = function(e) {
+
+                var target = dd(self.resultTarget).select();
+                target = dd_bindLoad(target);
+                target.result = e;
+                dd_load(target)
+            }
+        }
+        
         dd_ajax(get);
+        
     }
     
     self.prepareData = function() {
         var data = new FormData(self.target);
+        self.data = data;
         get.data = data;
+    }
+    
+    self.bindData = function() {
+        var allData = {};
+        for (var data of self.data.entries()) {
+            var key = data[0], value = data[1];
+            allData[key] = value;
+            
+        }
+        
+        allData = [allData];
+        var target = dd(self.dataTarget).select();
+        var xx = dd_bindLoad(target);
+        xx.url = 'undefined';
+        xx.result = allData;
+        dd_load(xx);
+        
     }
     
     self.__construct();

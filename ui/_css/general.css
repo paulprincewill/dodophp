@@ -17,6 +17,7 @@ a {
 	transition: all 0.5s;
 	margin: 20px;
 	display: inline-block;
+    cursor: pointer
 }
 
 a:hover {
@@ -66,6 +67,12 @@ form input[type='text'], form textarea {
 	border: 0px;
 	border-bottom: 1px solid #eee;
 	padding: 30px;
+}
+
+input {
+	border-radius: 50px;
+	border: 1px solid #eee;
+	padding: 10px 30px;
 }
 
 button, input[type='submit'], input[type='button'] {

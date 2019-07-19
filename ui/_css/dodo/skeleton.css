@@ -1,0 +1,46 @@
+
+/* ------------------
+------------------------------- STYLE FOR SKELENTON UI --------------
+------------------------------------------------------------------ */
+
+.dd_shortline:empty::after, .dd_longline:empty::after, .dd_thumbnail:empty {
+	content: "";
+	display: inline-block;
+	height: 10px;
+	border-radius: 50px;
+	margin: 5px 0px;
+	background: #ddd;
+}
+
+
+.dd_longline:empty::after {
+	width: 100%;
+}
+
+.dd_shortline:empty::after {
+	width: 40%;
+	margin: auto;
+}
+
+.dd_thumbnail:empty {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin: 7px
+}
+
+.dd_longline:empty::after,
+.dd_shortline:empty::after,
+.dd_thumbnail:empty  {
+	-webkit-animation: dd_loading 1s infinite alternate;
+	animation: dd_loading 1s infinite alternate;
+}
+
+@keyframes dd_loading {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
+  }
+}

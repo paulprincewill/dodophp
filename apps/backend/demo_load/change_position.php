@@ -1,0 +1,3 @@
+{
+    "final_position" : "center"
+}

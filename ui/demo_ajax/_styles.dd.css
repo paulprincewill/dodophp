@@ -1,0 +1,19 @@
+body {
+    margin: 5%
+}
+
+main {
+    width: 50%;
+    margin: auto;
+    text-align: left
+}
+
+a {
+    border: 1px solid #ddd;
+    padding: 8px 50px;
+    border-radius: 50px;
+}
+
+main > div {
+    margin-bottom: 20px
+}

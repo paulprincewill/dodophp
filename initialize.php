@@ -117,6 +117,18 @@
 		}
 	}
 
+    // Same thing as loadHeader above
+	function loadScript($link) {
+        
+        global $page_link;
+		if (file_exists(JS.$page_link.'/'.$link.'.js')) {
+			echo "<script src='". FRONTEND ."$page_link/$link.js'></script>";
+		}
+		else if (file_exists(JS.$link.'.js')) {
+            echo "<script src='". FRONTEND ."$link.js'></script>";
+		}
+	}
+
     function header_is_loaded() {
         global $page_link;
         include BACKEND_LIB.'dd_compile.php';

@@ -5,6 +5,10 @@ function dd_setAjax() {
                 
                 var ele = e.target;
                 var url = ele.getAttribute('dd_ajax');
+                var target = ele.getAttribute('dd_target');
+                if (target !==null && target !='') {
+                    ele = dd(target).select();
+                }
 
                 dd_ajax({
                     url: url,
@@ -31,6 +35,7 @@ function dd_ajax(get) {
 	self.url = get.url;
 	self.loader = '';
 	self.ready = get.ready;
+	self.after_request = get.after_request;
 	self.data = get.data || '';
 	self.method = get.method || 'POST';
     self.content_type = get.content_type || '';
@@ -124,6 +129,12 @@ function dd_ajax(get) {
         if (typeof self.ready === 'function') {
         	self.ready(e);
         }
+        
+        if (typeof self.after_request === 'function') {
+        	self.after_request(e);
+        }
+        
+        
         
         console.log(e);
     }

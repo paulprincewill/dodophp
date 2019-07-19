@@ -104,6 +104,29 @@ dd_loader [dd_onload]::after {
 ------------------------------------------------------------------ */
 
 
+
+
+/* -------------------------
+---------------------------- PAGINATION -------------
+-------------------------*/
+
+[dd_next]:empty:after {
+    content: 'Next';
+}
+
+[dd_previous]:empty:after {
+    content: 'Previous';
+}
+
+[dd_nodata] {
+    border: 1px solid #ddd;
+    padding: 30px 50px;
+    border-radius: 20px 20px 20px 0px;
+    font-size: 20px;
+    display: block;
+    width: 70% !important;
+    margin: 30px;
+}
 /* ------------------
 ------------------------------- STYLE FOR SKELENTON UI --------------
 ------------------------------------------------------------------ */
@@ -148,27 +171,4 @@ dd_loader [dd_onload]::after {
   to {
     opacity: 1;
   }
-}
-
-
-/* -------------------------
----------------------------- PAGINATION -------------
--------------------------*/
-
-[dd_next]:empty:after {
-    content: 'Next';
-}
-
-[dd_previous]:empty:after {
-    content: 'Previous';
-}
-
-[dd_nodata] {
-    border: 1px solid #ddd;
-    padding: 30px 50px;
-    border-radius: 20px 20px 20px 0px;
-    font-size: 20px;
-    display: block;
-    width: 70% !important;
-    margin: 30px;
 }

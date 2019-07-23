@@ -34,7 +34,7 @@
         copy_dir(UI.'ddcreate', "$project/ui/ddcreate");
         copy_dir(JS.'ddcreate', "$project/apps/frontend/ddcreate");
         copy_dir('../ddcreate', "$project/apps/backend/ddcreate");
-        copy_dir('../../../_dodo', "$project/_dodo");
+        // copy_dir('../../../_dodo', "$project/_dodo");
     }
 	
     

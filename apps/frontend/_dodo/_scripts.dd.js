@@ -387,12 +387,11 @@ function dd_bindLoad(dat) {
     var append = dat.getAttribute('dd_append') !== null && dat.getAttribute('dd_append') !='' && dat.getAttribute('dd_append') || '';
 
     var pagination = dat.getAttribute('dd_pagination') !== null && dat.getAttribute('dd_pagination') !='' && dat.getAttribute('dd_pagination') || '';
-
-    if (amount == '' && pagination == '') {
-        pagination = 'no';
-    } else {
-        pagination = 'yes';
+    
+    if (pagination == '') {
+        pagination = amount == '' && 'no' || 'yes';
     }
+    
     
     var interval = dat.getAttribute('dd_interval') !== null && dat.getAttribute('dd_interval') !='' && parseInt(dat.getAttribute('dd_interval')) || '';
     
@@ -601,7 +600,7 @@ function dd_load(get) {
 	self.displayMultipleData = function() {
         
         // self.amount becomes result length on these conditions
-        if (self.amount == 'all' || self.amount < self.result['length']) {self.amount = self.result['length'];}
+        if (self.amount == 'all' || self.amount > self.result['length']) {self.amount = self.result['length'];}
         
         var target = dd(self.target).select();
 		var allElements = target.childElementCount;
@@ -669,8 +668,6 @@ function dd_load(get) {
             
             var t = self.append == 'yes' && (allElements+i) || i;
 			var x = target.children[t];
-            console.log("t is "+t);
-			x.id= t;
             
 			if (typeof self.result[i] !== 'undefined' && !dd(self.result[i]).isEmpty()) {
                
@@ -699,18 +696,29 @@ function dd_load(get) {
         for (var x in data) {
             if (data.hasOwnProperty(x)) {
                 var where = dd(target).select();
-                var w = where.querySelectorAll("[dd_display='"+x+"']");
-                if (!dd(w).isEmpty()) {
-                    for (var i = 0; i<w.length; i++) {
-                        var tag = w[i].tagName.toLowerCase()
-                        if ( tag == 'img') {
-                            w[i].src = data[x]; 
-                        } else if (tag == 'input' || tag =='textarea') {
-                            w[i].value = data[x]; 
-                        } else {
-                            w[i].innerHTML = data[x]; 
+                
+                // We first check if target itself has dd_display
+                if (where.getAttribute('dd_display') !== null) {
+                        insertData(where);
+                } else {
+                    
+                    var w = where.querySelectorAll("[dd_display='"+x+"']");
+                    if (!dd(w).isEmpty()) {
+                        for (var i = 0; i<w.length; i++) {
+                            insertData(w[i]);
+
                         }
-                         
+                    }
+                }
+                
+                function insertData(w) {
+                    var tag = w.tagName.toLowerCase()
+                    if ( tag == 'img') {
+                        w.src = data[x]; 
+                    } else if (tag == 'input' || tag =='textarea') {
+                        w.value = data[x]; 
+                    } else {
+                        w.innerHTML = data[x]; 
                     }
                 }
                 
@@ -751,27 +759,17 @@ function dd_load(get) {
                 
                 function checkFor(condition) {
                     
-
                     var q = condition;
                     var dat = q.getAttribute('dd_checkFor');
-                    var each_condition = q.children;
+                    var dd_if = q.getAttribute("dd_if");
                     
 
                     if (dat == x) {
 
-                       for (var j = 0; j<each_condition.length; j++) {
-
-                            var y = each_condition[j];
-                           if (y.getAttribute('dd_if') !== null) {
-                             if (y.getAttribute('dd_if') == data[x]) {
-                                    dd(y).show();
-                                } else {
-
-                                    dd(y).hide();
-
-                                }  
-                           }
-                            
+                       if (dd_if !== null && dd_if == data[x]) {
+                                dd(q).show();
+                        } else {
+                            dd(q).hide();
                         } 
                     }
 

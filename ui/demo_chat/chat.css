@@ -3,7 +3,8 @@
     border-radius: 10px;
     margin: 30px auto;
     width: 45%;
-    overflow: hidden
+    overflow: hidden;
+    max-width: 500px
 }
 
 #messages {

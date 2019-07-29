@@ -12,8 +12,27 @@ function dd_setSubmit() {
         var target = forms[i];
 
 
-        var data = new FormData(target);
+        function feedback(feedback) {
+            var feedback_div = target.querySelector('[dd_feedback]');
+            // If feedback div exists, use it, else create one
+            if (feedback_div) {
 
+                feedback_div.innerHTML = feedback;
+                dd(feedback_div).fadeIn(1000);
+
+            } else {
+                
+                var feedback_div = document.createElement("div");
+                feedback_div.setAttribute('dd_feedback',null);
+                var text = document.createTextNode(feedback);
+                feedback_div.appendChild(text);
+                target.insertBefore(feedback_div, target.lastElementChild);
+                dd(feedback_div).fadeIn(1000);
+
+            }
+        }
+        
+        var data = new FormData(target);
         dd_submit({
             url: url,
             data: data,
@@ -27,34 +46,24 @@ function dd_setSubmit() {
                 } else if (typeof e.dd_redirect !== "undefined") {
                      window.location.href = e.dd_redirect;
                 }
-},
+                
+                if (typeof e.dd_feedback !== 'undefined') {
+                    feedback(e.dd_feedback);
+                }
+            },
 
             if_not : function(e) {
 
-                var error_div = target.querySelector('[dd_feedback]');
+                
                 if (typeof e.dd_feedback === 'undefined') {
                     var error = "Something went wrong while submitting this form";
                 } else {
                    var error = e.dd_feedback; 
                 }
+                
+                feedback(error);
 
-
-                // If feedback div exists, use it, else create one
-                if (error_div) {
-
-                    error_div.innerHTML = error;
-                    dd(error_div).fadeIn(1000);
-
-                } else {
-                    var error_div = document.createElement("div");
-                    error_div.setAttribute('dd_feedback',null);
-                    var text = document.createTextNode(error);
-                    error_div.appendChild(text);
-                    target.insertBefore(error_div, target.lastElementChild);
-                    dd(error_div).fadeIn(1000);
-
-                }
-},
+            },
             content_type: "none",
             bindData: bindData,
             bindResult: bindResult

@@ -249,11 +249,13 @@ function dd_load(get) {
 
 	self.displayMultipleData = function() {
         
+
         // self.amount becomes result length on these conditions
         if (self.amount == 'all' || self.amount > self.result['length']) {self.amount = self.result['length'];}
         
         var target = dd(self.target).select();
 		var allElements = target.childElementCount;
+        
         
         // Exclude pagination when counting all elements
         if (target.querySelector('[dd_pagination]')) {
@@ -265,38 +267,43 @@ function dd_load(get) {
             allElements = allElements-1;
         }
         
+        
         if (allElements == 0) {
             console.log("DoDo203: Could not find any element inside '"+self.target+"' or '"+self.target+"' does not exist");
             return false;
         }
         
+        // We start of by cloning first element
+        var elementTemplate = target.querySelector('[dd_cloned]');
+        if (!elementTemplate) {
+            dd(target.children[0]).clone(1);
+            elementTemplate = target.querySelector('[dd_cloned]');
+
+        } else {
+            // Exclude clone when counting all elements
+            allElements = allElements-1;
+        }
+        
+        
+        
+        
         // Create new elements for extra data
         // If the data we need is greater than the available elements
         // Always create new element if we are appending
-        if (self.append == 'yes') {
+        if (self.append == 'yes' || self.amount > allElements) {
             
-            var howMany = allElements == 1 && self.amount-1 || self.amount;
-            for (var i= 0; i<howMany; i++) {
-                
-                var newElement = target.children[0].cloneNode(true);
-                target.children[allElements-1].parentNode.insertBefore(newElement, target.children[allElements-1].nextSibling);
+            if (self.append == 'yes') {
+                var howMany = allElements == 1 && self.amount-1 || self.amount;
+            } else if (self.amount > allElements) {
+                var howMany = self.amount - allElements;
             }
-            
-            // Since target now has new children, we have to re select it
-            target = dd(self.target).select();
-            
-        } else if (self.amount > allElements) {
-            
-            for (var i= 0; i<self.amount - allElements; i++) {
-                
-                var newElement = target.children[0].cloneNode(true);
-                target.children[allElements-1].parentNode.insertBefore(newElement, target.children[allElements-1].nextSibling);
-            }
-            
-            // Since target now has new children, we have to re select it
-            target = dd(self.target).select();
 
+        
+            dd(elementTemplate).clone(howMany);      
+            // Since target now has new children, we have to re select it
+            target = dd(self.target).select();
         }
+        
 
         if (self.append != 'yes') {
           

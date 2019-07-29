@@ -1,1 +1,1 @@
-<h1 dd_clone="3"> This is clone no. $id </h1>
+<h1 dd_clone="3" id="clone$id"> This is clone no. $id </h1>

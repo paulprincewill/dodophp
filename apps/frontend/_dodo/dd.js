@@ -178,5 +178,32 @@ function dd(selector) {
         
     }
     
+    self.clone = function(repeat) {
+        
+        var target = self.target;
+        var current_cycle = target.getAttribute("dd_cloned") !== null && parseInt(target.getAttribute("dd_cloned")) || 0;
+
+        for (var j = 1; j <= repeat; j++) {
+            var clone = target.cloneNode(true); // Clone node has to be inside, not outside this loop
+            var id = j+current_cycle;
+            clone.innerHTML = clone.innerHTML.replace(/\$id/g, id);
+            if (target.id !== null && target.id !='') {
+                clone.id = target.id.replace(/\$id/g, id);
+            }
+
+            dd(clone).show();
+            clone.removeAttribute('dd_cloned');
+
+            target.parentNode.insertBefore(clone, target);
+
+        } 
+
+
+        target.setAttribute("dd_cloned", current_cycle + repeat);
+        self.hide();
+        
+        console.log("clone happend");
+    }
+    
 	return self;
 }

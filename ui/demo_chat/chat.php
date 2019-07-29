@@ -29,6 +29,8 @@
     
     <form class="textarea" action="app/demo_chat/send_message" dd_submit="yes" dd_bindData="#messages">
         <textarea placeholder="Type in message" name="message"></textarea>
+        <input type="hidden" name="sender" value="you">
+        <input type="hidden" name="sender_name" value="Paul">
         <input type="submit" value="Send">
     </form>
 </div>

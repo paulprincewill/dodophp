@@ -11,6 +11,7 @@
 	loadUI("demo2");
 	loadUI("demo3");
 	loadUI("demo4");
+	loadUI("demo5");
 	loadScript("_lib/loadcode");
 	loadScript("_lib/clipboard.min");
 	loadScript("_lib/prism");

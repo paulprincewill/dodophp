@@ -207,7 +207,23 @@ function dd(selector) {
     
 	return self;
 }
-function dd_setAjax() {
+function dd_dataFromLink() {
+    // given a link 'http://localhost/dodo?name=paul&gender=male' ,
+    // This code will get 'name=paul' and 'gender=male' in an object
+    // First, we get the link without a '?'
+    var link = window.location.search.slice(1);
+    // Then we split each data by targetting '&'
+    link = link.split('&');
+    
+    // Then we loop through each data and convert to object
+    var allData = {};
+    for (var i=0; i < link.length; i++) {
+        var data = link[i].split('=');
+        allData[data[0]] = data[1];
+    }
+    
+    return allData;
+}function dd_setAjax() {
    document.addEventListener('click', function(e) {
             
             if (e.target && e.target.getAttribute('dd_ajax') !== null) {
@@ -436,10 +452,15 @@ function dd_bindLoad(dat) {
     
     var interval = dat.getAttribute('dd_interval') !== null && dat.getAttribute('dd_interval') !='' && parseInt(dat.getAttribute('dd_interval')) || '';
     
+    var dataFromLink = dat.getAttribute('dd_dataFromLink') !== null && dat.getAttribute('dd_dataFromLink') =='' && window.location.search.slice(1) || '';
+    
+    var method = dataFromLink !='' && 'GET' || 'POST'; 
     
     return {
             url: url,
             target: dat,
+            data: dataFromLink,
+            method: method,
             amount: amount,
             pagination: pagination,
             append: append,

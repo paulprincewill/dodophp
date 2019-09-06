@@ -45,10 +45,15 @@ function dd_bindLoad(dat) {
     
     var interval = dat.getAttribute('dd_interval') !== null && dat.getAttribute('dd_interval') !='' && parseInt(dat.getAttribute('dd_interval')) || '';
     
+    var dataFromLink = dat.getAttribute('dd_dataFromLink') !== null && dat.getAttribute('dd_dataFromLink') =='' && window.location.search.slice(1) || '';
+    
+    var method = dataFromLink !='' && 'GET' || 'POST'; 
     
     return {
             url: url,
             target: dat,
+            data: dataFromLink,
+            method: method,
             amount: amount,
             pagination: pagination,
             append: append,
